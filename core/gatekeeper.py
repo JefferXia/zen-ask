@@ -3,11 +3,9 @@ class ClicheFilter:
         print("Initializing Gatekeeper (Cliche Filter)...")
         try:
             from sentence_transformers import SentenceTransformer, util
-            import torch
             self.use_ai_filter = True
             self.model = SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')
             self.util = util
-            self.torch = torch
             print("✓ AI Filter enabled (sentence-transformers)")
         except ImportError:
             self.use_ai_filter = False
@@ -37,7 +35,8 @@ class ClicheFilter:
         try:
             text_embedding = self.model.encode(text, convert_to_tensor=True)
             cosine_scores = self.util.cos_sim(text_embedding, self.cliche_embeddings)
-            max_score = self.torch.max(cosine_scores).item()
+            # 将 torch tensor 转换为 numpy 并计算最大值
+            max_score = cosine_scores.numpy().max()
             return max_score > self.threshold
         except Exception:
             # 如果AI过滤出错，使用基础过滤
