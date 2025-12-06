@@ -19,19 +19,23 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-brain = AletheiaBrain(mode="compatible") 
+brain = AletheiaBrain(mode="compatible")
 gatekeeper = ClicheFilter()
+
 
 class Query(BaseModel):
     text: str
+
 
 @app.get("/")
 async def root():
     return {"message": "Zen-Ask Backend is running", "version": "1.0.0"}
 
+
 @app.get("/health")
 async def health_check():
     return {"status": "healthy"}
+
 
 @app.post("/api/ask")
 async def ask(query: Query):
@@ -44,6 +48,7 @@ async def ask(query: Query):
         return {"answer": answer}
     return {"answer": "人类的语言有时过于苍白，我选择沉默。"}
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+
+# if __name__ == "__main__":
+#     import uvicorn
+#     uvicorn.run(app, host="0.0.0.0", port=8000)
