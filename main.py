@@ -2,7 +2,6 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from core.brain import AletheiaBrain
-from core.gatekeeper import ClicheFilter
 import time
 from dotenv import load_dotenv
 import os
@@ -20,7 +19,6 @@ app.add_middleware(
 )
 
 brain = AletheiaBrain(mode="compatible")
-gatekeeper = ClicheFilter()
 
 
 class Query(BaseModel):
@@ -39,14 +37,8 @@ async def health_check():
 
 @app.post("/api/ask")
 async def ask(query: Query):
-    max_retries = 3
-    for i in range(max_retries):
-        answer = brain.think(query.text)
-        if gatekeeper.is_cliche(answer):
-            print(f"Filter triggered ({i+1}/{max_retries}): {answer}")
-            continue
-        return {"answer": answer}
-    return {"answer": "人类的语言有时过于苍白，我选择沉默。"}
+    answer = brain.think(query.text)
+    return {"answer": answer}
 
 
 # if __name__ == "__main__":
