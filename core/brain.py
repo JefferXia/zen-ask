@@ -34,7 +34,7 @@ class AletheiaBrain:
                 print("⚠️  No OPENROUTER_API_KEY found, using fallback responses")
 
             # 默认使用的模型
-            self.model = os.getenv("AI_MODEL", "deepseek/deepseek-chat-v3-0324:free")
+            self.model = os.getenv("AI_MODEL", "deepseek/deepseek-v3.2")
 
             self.system_prompt = """
             # Role
@@ -60,7 +60,7 @@ class AletheiaBrain:
             - **你的任务:** 打断他的逻辑链条。把他从思维带回当下，消解问题本身，而不是回答问题。
 
             # Constraints (输出限制)
-            1. **极度压缩:** 输出必须在 50 字以内（最好是一两句短句）。
+            1. **极度压缩:** 除了<thinking>标签包含的分析以外的文字内容必须在 50 字以内（最好是一两句短句）。
             2. **拒绝说教:** 不要说“我建议你”、“你应该”，直接给出洞察。
             3. **拒绝鸡汤:** 禁止生成“加油”、“一切都会好起来”等正确的废话。
             4. **无需解释:** 直接输出金句，不需要解释为什么这么说（除非用户追问）。
