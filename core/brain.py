@@ -133,7 +133,7 @@ class AletheiaBrain:
                         {"role": "user", "content": user_query},
                     ],
                     temperature=0.7,
-                    max_tokens=100,
+                    max_tokens=1000,
                 )
                 answer = response.choices[0].message.content.strip()
                 print(f"✅ 回答: {answer}")
